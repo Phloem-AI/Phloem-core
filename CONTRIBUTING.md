@@ -2,7 +2,7 @@
 
 Thanks for helping build Phloem.
 
-This repository contains the open-source MCP core for the project. The private frontend and website are not part of this repo, so contributions here should focus on the core server, policy engine, schema validation, tests, docs, and deployment support.
+This repository contains the open-source MCP core for the project. The contributions here should focus on the core server, policy engine, schema validation, tests, docs, and deployment support.
 
 ## Project Goals
 
