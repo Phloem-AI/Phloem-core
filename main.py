@@ -1,4 +1,6 @@
+from starlette.middleware.cors import CORSMiddleware
 from fastmcp import FastMCP
+from starlette.middleware import Middleware
 from dotenv import load_dotenv
 
 load_dotenv()
