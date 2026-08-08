@@ -1,10 +1,17 @@
-from starlette.middleware.cors import CORSMiddleware
 from fastmcp import FastMCP
+from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
 from dotenv import load_dotenv
 
 load_dotenv()
+
 mcp = FastMCP(name="Phloem")
+
+@mcp.tool()
+def get_my_todos(data: str) -> str:
+    """Get data Printed"""
+    return "Data: " + data
+
 
 if __name__ == "__main__":
     mcp.run(
