@@ -64,7 +64,7 @@ Do not:
 - add unaudited shortcuts around policy evaluation
 - claim compliance or certification guarantees in code or docs
 
-If you discover a vulnerability, please report it privately rather than opening a public issue. (Find email in footer at: [Phloem](phloem-ai.netlify.app))
+If you discover a vulnerability, please report it privately rather than opening a public issue. (Find email in footer at: [Phloem](https://phloem-ai.netlify.app))
 
 ## Style Guide
 
