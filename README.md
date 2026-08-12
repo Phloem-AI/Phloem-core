@@ -43,7 +43,7 @@ The MVP focuses on the core open-source server:
 
 ## Local Setup Guide
 
-**Pre-requisite:** 
+**Prerequisite:** Install uv (by using ) 
 
 ## License
 
