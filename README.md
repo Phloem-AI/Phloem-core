@@ -41,6 +41,8 @@ The MVP focuses on the core open-source server:
 1. semantic handoff contracts
 2. context firewall and sanitization
 
+## Local Setup Guide
+
 ## License
 
 Apache License 2.0
