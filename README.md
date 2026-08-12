@@ -47,7 +47,9 @@ The MVP focuses on the core open-source server:
 
 Then, clone the repo and run:
 
-
+```
+uv run main.py
+```
 
 ## License
 
