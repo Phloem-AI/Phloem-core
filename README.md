@@ -43,7 +43,11 @@ The MVP focuses on the core open-source server:
 
 ## Local Setup Guide
 
-**Prerequisite:** Install uv (by using ```pip install uv``` or any other method) 
+**Prerequisite:** Install uv (by using ```pip install uv``` or any other method)
+
+Then, clone the repo and run:
+
+
 
 ## License
 
