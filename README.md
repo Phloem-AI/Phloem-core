@@ -43,6 +43,8 @@ The MVP focuses on the core open-source server:
 
 ## Local Setup Guide
 
+**Pre-requisite:** 
+
 ## License
 
 Apache License 2.0
