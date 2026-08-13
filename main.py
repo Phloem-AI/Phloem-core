@@ -30,6 +30,9 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
     if scheme.lower() != "bearer" or not token:
         return "Invalid Authorization header"
 
+    #TODO: Validate the token (don't trust user input)
+
+    #TODO: Implement your logic to send the data to other AI Agents/Services here.
     return "Data: " + data
 
 
