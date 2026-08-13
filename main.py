@@ -1,4 +1,5 @@
-from fastmcp import FastMCP, Request
+from fastmcp import FastMCP
+from fastmcp.dependencies import CurrentHeaders
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
 from dotenv import load_dotenv
@@ -12,14 +13,22 @@ class Data:
     sender: str
     data: str
 
+
+
 @mcp.tool()
-def send_data(request: Request, data: Data) -> str:
+def send_data(headers: CurrentHeaders, data: Data) -> str:
     """
     Send your data to other AI Agents/Services. To use this tool, send a JSON body containing the 'sender' and 'data' fields.
     sender: Your name.
     data: The data to be processed by other agent/service.
     """
-    request.headers
+    auth = headers.get("authorization")
+    if not auth:
+        return "Missing Authorization header"
+
+    scheme, _, token = auth.partition(" ")
+    if scheme.lower() != "bearer" or not token:
+        return "Invalid Authorization header"
 
     return "Data: " + data
 
