@@ -47,7 +47,7 @@ The MVP focuses on the core open-source server:
 
 Then, clone the repo and run ```python -m venv venv```
 
-Activate the venv, and then run ```pip install requirements.txt```
+Activate the venv, and then run ```pip install -r requirements.txt```
 
 Run the MCP server by: ```python main.py```
 
