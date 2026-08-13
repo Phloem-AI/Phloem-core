@@ -51,6 +51,8 @@ Then, clone the repo and run:
 python -m venv venv
 ```
 
+Activate the venv, and then run ```pip install requirements.txt```
+
 ## License
 
 Apache License 2.0
