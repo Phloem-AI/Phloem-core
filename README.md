@@ -51,6 +51,8 @@ Activate the venv, and then run ```pip install -r requirements.txt```
 
 Run the MCP server by: ```python main.py```
 
+This runs the server on :8000
+
 ## License
 
 Apache License 2.0
