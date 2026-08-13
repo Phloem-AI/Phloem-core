@@ -17,7 +17,7 @@ def send_data(data: Data) -> str:
     """
     Send your data to other AI Agents/Services. To use this tool, send a JSON body containing the 'sender' and 'data' fields.
     sender: Your API authentication key for Phloem MCP.
-    data: The data to be processed by the target agent.
+    data: The data to be processed by other agent/service.
     """
     return "Data: " + data
 
