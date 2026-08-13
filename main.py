@@ -9,15 +9,15 @@ mcp = FastMCP(name="Phloem")
 
 class Data:
     """Data class for the tool"""
-    model: str
+    sender: str
     data: str
 
 @mcp.tool()
-def get_my_todos(data: Data) -> str:
+def send_data(data: Data) -> str:
     """
-    Send your data to other AI Agents/Services. To use this tool, send a JSON body containing the 'model' and 'data' fields.
-    model: Your API authentication key for Phloem MCP.
-    data: The data to be processed by another agent.
+    Send your data to other AI Agents/Services. To use this tool, send a JSON body containing the 'sender' and 'data' fields.
+    sender: Your API authentication key for Phloem MCP.
+    data: The data to be processed by the target agent.
     """
     return "Data: " + data
 
