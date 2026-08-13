@@ -33,7 +33,8 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
     #TODO: Validate the token (don't trust user input)
 
     #TODO: Implement your logic to send the data to other AI Agents/Services here.
-    return "Data: " + data
+    
+    return "Succesfully sent data"
 
 
 if __name__ == "__main__":
