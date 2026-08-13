@@ -13,12 +13,14 @@ class Data:
     data: str
 
 @mcp.tool()
-def send_data(data: Data) -> str:
+def send_data(request: Request, data: Data) -> str:
     """
     Send your data to other AI Agents/Services. To use this tool, send a JSON body containing the 'sender' and 'data' fields.
     sender: Your name.
     data: The data to be processed by other agent/service.
     """
+    request.headers
+
     return "Data: " + data
 
 
