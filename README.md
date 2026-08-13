@@ -45,13 +45,11 @@ The MVP focuses on the core open-source server:
 
 **Prerequisite:** Install python 
 
-Then, clone the repo and run:
-
-```
-python -m venv venv
-```
+Then, clone the repo and run ```python -m venv venv```
 
 Activate the venv, and then run ```pip install requirements.txt```
+
+Run the MCP server by: ```python main.py```
 
 ## License
 
