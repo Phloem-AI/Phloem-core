@@ -1,4 +1,4 @@
-from fastmcp import FastMCP
+from fastmcp import FastMCP, Request
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
 from dotenv import load_dotenv
@@ -16,7 +16,7 @@ class Data:
 def send_data(data: Data) -> str:
     """
     Send your data to other AI Agents/Services. To use this tool, send a JSON body containing the 'sender' and 'data' fields.
-    sender: Your API authentication key for Phloem MCP.
+    sender: Your name.
     data: The data to be processed by other agent/service.
     """
     return "Data: " + data
