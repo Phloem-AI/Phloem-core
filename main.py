@@ -7,9 +7,18 @@ load_dotenv()
 
 mcp = FastMCP(name="Phloem")
 
+class Data:
+    """Data class for the tool"""
+    model: str
+    data: str
+
 @mcp.tool()
-def get_my_todos(data: str) -> str:
-    """Get data Printed"""
+def get_my_todos(data: Data) -> str:
+    """
+    Send your data to other AI Agents/Services. To use this tool, send a JSON body containing the 'model' and 'data' fields.
+    Model: The model to use for processing the data (e.g., "gpt-4", "gpt-3.5-turbo").
+    Data: The data to be processed by the specified model.
+    """
     return "Data: " + data
 
 
