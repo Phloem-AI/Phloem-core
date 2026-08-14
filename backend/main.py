@@ -86,6 +86,11 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
 # TODO: Queue behaviour implementation (using created_at() time to fetch the oldest data first)
 
 
+@mcp.tool()
+def get_data(headers: CurrentHeaders) -> Data:
+    # TODO: Implement your logic to fetch data here.
+    pass
+
 if __name__ == "__main__":
     mcp.run(
         transport="http",
