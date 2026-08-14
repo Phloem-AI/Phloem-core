@@ -33,23 +33,20 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
         return "Invalid Authorization header"
 
     # Validate input - don't trust user input, check for code injection
-    def is_safe_data(value: str) -> bool:
-        """Check if the data value doesn't contain program code."""
-        dangerous_patterns = [
-            # Python patterns
-            "import ", "from ", "def ", "class ", "print(", 
-            # SQL patterns
-            "SELECT ", "INSERT ", "UPDATE ", "DELETE ", "DROP ",
-            # JavaScript patterns
-            "function ", "var ", "let ", "const ", "=> ",
-            # Shell patterns
-            "`", "$(", ";", "|", "&",
-        ]
-        value_lower = value.lower()
-        for pattern in dangerous_patterns:
-            if pattern.lower() in value_lower:
-                return False
-        return True
+    dangerous_patterns = [
+        # Python patterns
+        "import ", "from ", "def ", "class ", "print(", 
+        # SQL patterns
+        "SELECT ", "INSERT ", "UPDATE ", "DELETE ", "DROP ",
+        # JavaScript patterns
+        "function ", "var ", "let ", "const ", "=> ",
+        # Shell patterns
+        "`", "$(", ";", "|", "&",
+    ]
+    value_lower = token.lower()
+    for pattern in dangerous_patterns:
+        if pattern.lower() in value_lower:
+            return "Invalid input: Authorization token contains unrecognized patterns"
 
     if not is_safe_data(data.data):
         return "Invalid input: Data contains potentially dangerous code patterns"
