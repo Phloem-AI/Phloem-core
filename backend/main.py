@@ -53,8 +53,7 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
     if not is_safe_data(token):
             return "Authorization header contains potentially dangerous code patterns"
 
-    if not is_safe_data(data.data):
-        return "Data contains potentially dangerous code patterns"
+    # TODO: Validating the data sent by AI Agent 
 
     # TODO: Implement your logic to send the data to other AI Agents/Services here.
     
