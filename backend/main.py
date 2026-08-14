@@ -21,6 +21,8 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
     Send your data to other AI Agents/Services. To use this tool, send a JSON body containing the 'sender' and 'data' fields.
     sender: Your name.
     data: The data to be processed by other agent/service.
+
+    You'll recieve a response indicating whether the data was successfully sent or if there was an error.
     """
     auth = headers.get("authorization")
     if not auth:
