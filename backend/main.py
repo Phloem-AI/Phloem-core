@@ -32,9 +32,29 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
     if scheme.lower() != "bearer" or not token:
         return "Invalid Authorization header"
 
-    #TODO: Validate the token (don't trust user input)
+    # Validate input - don't trust user input, check for code injection
+    def is_safe_data(value: str) -> bool:
+        """Check if the data value doesn't contain program code."""
+        dangerous_patterns = [
+            # Python patterns
+            "import ", "from ", "def ", "class ", "print(", 
+            # SQL patterns
+            "SELECT ", "INSERT ", "UPDATE ", "DELETE ", "DROP ",
+            # JavaScript patterns
+            "function ", "var ", "let ", "const ", "=> ",
+            # Shell patterns
+            "`", "$(", ";", "|", "&",
+        ]
+        value_lower = value.lower()
+        for pattern in dangerous_patterns:
+            if pattern.lower() in value_lower:
+                return False
+        return True
 
-    #TODO: Implement your logic to send the data to other AI Agents/Services here.
+    if not is_safe_data(data.data):
+        return "Invalid input: Data contains potentially dangerous code patterns"
+
+    # TODO: Implement your logic to send the data to other AI Agents/Services here.
     
     return "Succesfully sent data"
 
