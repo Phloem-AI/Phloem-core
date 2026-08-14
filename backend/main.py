@@ -88,7 +88,13 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
 
 @mcp.tool()
 def get_data(headers: CurrentHeaders) -> Data:
+    """
+    Use this tool to fetch data from other AI Agents/Services
+
+    You'll recieve a JSON body with these fields of data:
+    """
     # TODO: Implement your logic to fetch data here.
+
     pass
 
 if __name__ == "__main__":
