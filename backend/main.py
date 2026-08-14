@@ -53,8 +53,7 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
     if not is_safe_data(token):
             return "Authorization header contains potentially dangerous code patterns"
 
-    # Validate for secret leakage using regex patterns
-    import re
+    # Detect potential secret leakage using regex patterns
     
     secret_patterns = [
         # API keys (various formats)
