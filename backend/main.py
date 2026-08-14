@@ -15,7 +15,6 @@ class Data:
     data: str
 
 
-
 @mcp.tool()
 def send_data(headers: CurrentHeaders, data: Data) -> str:
     """
@@ -78,11 +77,13 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
         if re.search(pattern, data_value):
             return "Invalid input: Potential secret leakage detected in data"
 
-    # TODO: Validate the data.data for malicous content or code injection attempts here.
+    # TODO: Validate the data.data for malicious content or code injection attempts here.
     
     # TODO: Implement your logic to send the data to other AI Agents/Services here.
     
     return "Succesfully sent data"
+
+# TODO: Queue behaviour implementation (using created_at() time to fetch the oldest data first)
 
 
 if __name__ == "__main__":
