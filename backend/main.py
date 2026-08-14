@@ -90,8 +90,11 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
 def get_data(headers: CurrentHeaders) -> Data:
     """
     Use this tool to fetch data from other AI Agents/Services
+    If there's no data available, you'll receive a message indicating that no data is available.
 
-    You'll recieve a JSON body with these fields of data:
+    If data is available, you'll recieve a JSON body with these fields of data:
+    sender: The name of the sender.
+    data: The data sent by the sender.
     """
     # TODO: Implement your logic to fetch data here.
 
