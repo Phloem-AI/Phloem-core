@@ -3,6 +3,7 @@ from fastmcp.dependencies import CurrentHeaders
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
 from dotenv import load_dotenv
+import re
 
 load_dotenv()
 
@@ -76,6 +77,8 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
     for pattern in secret_patterns:
         if re.search(pattern, data_value):
             return "Invalid input: Potential secret leakage detected in data"
+
+    # TODO: Validate the data.data for malicous content or code injection attempts here.
     
     # TODO: Implement your logic to send the data to other AI Agents/Services here.
     
