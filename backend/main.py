@@ -53,8 +53,31 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
     if not is_safe_data(token):
             return "Authorization header contains potentially dangerous code patterns"
 
-    # TODO: Validating the data sent by AI Agent 
-
+    # Validate for secret leakage using regex patterns
+    import re
+    
+    secret_patterns = [
+        # API keys (various formats)
+        r'(?i)(api[_-]?key|apikey)\s*[:=]\s*["\']?\S+["\']?',
+        # Passwords
+        r'(?i)(password|passwd|pwd)\s*[:=]\s*["\']?\S+["\']?',
+        # AWS keys
+        r'(?i)AKIA[0-9A-Z]{16}',
+        # Google API keys
+        r'(?i)AIza[0-9A-Za-z\\-_]{35}',
+        # JWT tokens (already validated in auth, but check for leakage)
+        r'(?i)[a-zA-Z0-9\\-_]+\\.[a-zA-Z0-9\\-_]+\\.[a-zA-Z0-9\\-_]+',
+        # Database connection strings
+        r'(?i)(mongodb|postgres|mysql|sqlite)://\S+',
+        # Generic secret patterns
+        r'(?i)(secret|token|key)\\s*[:=]\\s*["\']?\S+["\']?',
+    ]
+    
+    data_value = data.data
+    for pattern in secret_patterns:
+        if re.search(pattern, data_value):
+            return "Invalid input: Potential secret leakage detected in data"
+    
     # TODO: Implement your logic to send the data to other AI Agents/Services here.
     
     return "Succesfully sent data"
