@@ -51,6 +51,10 @@ Activate the venv, and then run ```pip install -r requirements.txt```
 
 Setup the *.env* file:
 
+```
+SUPABASE_URL=https://your-supabase-url.supabase.co
+SUPABASE_KEY=your-supabase-key
+```
 
 Run the MCP server by: ```python main.py```
 
