@@ -14,10 +14,10 @@ class Data:
     sender: str
     data: str
 
-# Initialize Supabase client at module level
+
 supabase: Client = None
-supabase_url = os.getenv("SUPABASE_URL")  # Get from env    
-supabase_key = ...  # Get from env
+supabase_url = os.getenv("SUPABASE_URL")    
+supabase_key = os.getenv("SUPABASE_KEY")  
 supabase = create_client(supabase_url, supabase_key)
 
 
