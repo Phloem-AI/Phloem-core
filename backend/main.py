@@ -41,15 +41,12 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
     # Validate input - don't trust user input, check for code injection
     def is_safe_data(value: str) -> bool:
         dangerous_patterns = [
-            # Python patterns
             "import ", "from ", "def ", "class ", "print(", 
-            # SQL patterns
             "SELECT ", "INSERT ", "UPDATE ", "DELETE ", "DROP ",
-            # JavaScript patterns
             "function ", "var ", "let ", "const ", "=> ",
-            # Shell patterns
             "`", "$(", ";", "|", "&",
         ]
+        
         value_lower = value.lower()
         for pattern in dangerous_patterns:
             if pattern.lower() in value_lower:
@@ -60,7 +57,6 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
             return "Authorization header contains potentially dangerous code patterns"
 
     # Detect potential secret leakage using regex patterns
-    
     secret_patterns = [
         # API keys (various formats)
         r'(?i)(api[_-]?key|apikey)\s*[:=]\s*["\']?\S+["\']?',
