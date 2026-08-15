@@ -8,19 +8,10 @@ from supabase import create_client, Client
 
 # Initialize Supabase client at module level
 supabase: Client = None
+supabase_url = ...  # Get from env
+supabase_key = ...  # Get from env
+supabase = create_client(supabase_url, supabase_key)
 
-def init_supabase():
-    """Initialize Supabase client from environment variables"""
-    global supabase
-    supabase_url = ...  # Get from env
-    supabase_key = ...  # Get from env
-    supabase = create_client(supabase_url, supabase_key)
-
-# OR initialize inline (for quick setup):
-# supabase = create_client(
-#     ...,  # SUPABASE_URL from env
-#     ...   # SUPABASE_ANON_KEY from env
-# )
 
 load_dotenv()
 
