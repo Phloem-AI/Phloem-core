@@ -2,18 +2,10 @@ from fastmcp import FastMCP
 from fastmcp.dependencies import CurrentHeaders
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
-from dotenv import load_dotenv
+import os
 import re
 from supabase import create_client, Client
 
-# Initialize Supabase client at module level
-supabase: Client = None
-supabase_url = ...  # Get from env
-supabase_key = ...  # Get from env
-supabase = create_client(supabase_url, supabase_key)
-
-
-load_dotenv()
 
 mcp = FastMCP(name="Phloem")
 
@@ -21,6 +13,12 @@ class Data:
     """Data class for the tool"""
     sender: str
     data: str
+
+# Initialize Supabase client at module level
+supabase: Client = None
+supabase_url = os.getenv("SUPABASE_URL")  # Get from env    
+supabase_key = ...  # Get from env
+supabase = create_client(supabase_url, supabase_key)
 
 
 @mcp.tool()
