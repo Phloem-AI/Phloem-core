@@ -49,6 +49,9 @@ Clone the repo & *cd in backend*, then run ```python -m venv venv```
 
 Activate the venv, and then run ```pip install -r requirements.txt```
 
+Setup the *.env* file:
+
+
 Run the MCP server by: ```python main.py```
 
 This runs the server on *localhost:8000*
