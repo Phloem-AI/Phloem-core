@@ -61,16 +61,12 @@ The server runs over HTTP transport at `0.0.0.0:8000` with permissive CORS.
 - Design goals: zero-data retention (data deleted once delivered), secret extraction/redaction, policy-driven handoffs.
 - Supabase client is initialized at module load from env vars.
 
-## Known TODOs / Incomplete Areas
-
-- `send_data`: validation of `data.data` for malicious content/injection is still a TODO; actual relay logic to destination agents is unimplemented.
-- `get_data`: entirely unimplemented (`pass`); queue behavior using `created_at()` timestamps is planned.
-- Env vars are read via `os.getenv` but `.env` loading may need `python-dotenv` or similar — verify before assuming values are present.
-
 ## Conventions for Agents
 
 - Keep changes within `backend/`; this is currently a single-file server.
 - Never commit `.env`, API keys, or tokens. Use `.env.example` as the template.
+- Don't introduce unnecessary dependencies that can be avoided with simple work-arounds.
 - Preserve the security posture: validate all incoming headers and payloads; treat all input as untrusted.
+- Test the code after any changes are made.
 - Match existing style: plain functions, docstrings written as tool descriptions for LLM consumers, inline `# TODO:` comments for unfinished work.
 - Update `README.md` / `TODO` when adding features that change scope.
