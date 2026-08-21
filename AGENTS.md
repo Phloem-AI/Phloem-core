@@ -18,8 +18,7 @@ Phloem-core/
 │   └── .env.example       # Template for required env vars
 ├── README.md              # Product vision + local setup guide
 ├── CONTRIBUTING.md
-├── LICENSE                # Apache-2.0
-└── TODO
+└── LICENSE                # Apache-2.0
 ```
 
 ## Tech Stack
