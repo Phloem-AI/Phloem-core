@@ -80,8 +80,12 @@ def send_data(headers: CurrentHeaders, data: str) -> str:
     You'll recieve a response indicating whether the data was successfully sent or if there was an error.
     """
 
-    # Validate input - don't trust user input, check for code injection
+    if validate_auth_token(headers) is None:
+        return "Authorization header is missing or invalid. Please provide a valid Bearer token."
+    
     token = validate_auth_token(headers)
+
+    # Validate input - don't trust user input, check for code injection
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
 
