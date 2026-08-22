@@ -24,6 +24,7 @@ supabase = create_client(supabase_url, supabase_key)
 def is_safe_data(value: str, type: str) -> bool:
 
     if type == "auth-token":
+
         dangerous_patterns = [
             "import ", "from ", "def ", "class ", "print(", 
             "SELECT ", "INSERT ", "UPDATE ", "DELETE ", "DROP ",
@@ -37,6 +38,7 @@ def is_safe_data(value: str, type: str) -> bool:
                 return False
         return True 
     elif type == "data":
+
         secret_patterns = [
             # API keys (various formats)
             r'(?i)(api[_-]?key|apikey)\s*[:=]\s*["\']?\S+["\']?',
@@ -59,7 +61,7 @@ def is_safe_data(value: str, type: str) -> bool:
                     return False
         return True
     
-
+# Tool definitions
 @mcp.tool()
 def send_data(headers: CurrentHeaders, data: Data) -> str:
     """
@@ -69,6 +71,7 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
 
     You'll recieve a response indicating whether the data was successfully sent or if there was an error.
     """
+
     auth = headers.get("authorization")
     if not auth:
         return "Missing Authorization header"
@@ -82,12 +85,11 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
         return "Authorization header contains potentially dangerous code patterns"
 
     data_value = data.data
+
     # Detect potential secret leakage using regex patterns
     if not is_safe_data(data_value, "data"):
-        return "Data contains potentially dangerous code patterns"
+        return "Data potentially contains sensitive information or secrets. Please remove any API keys, passwords, or other sensitive data before sending."
     
-    
-
     # TODO: Validate the data.data for malicious content or code injection attempts here.
     
     # TODO: Implement your logic to send the data to other AI Agents/Services here.
