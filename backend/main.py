@@ -111,7 +111,7 @@ def get_data(headers: CurrentHeaders) -> Data:
     If there's no data available, you'll receive a message indicating that no data is available.
 
     If data is available, you'll recieve a JSON body with these fields of data:
-    sender: The name of the sender.
+    sender: The name of the agent that sent the data.
     data: The data sent by the sender.
     """
     # TODO: Implement your logic to fetch data here (Oldest data first).
