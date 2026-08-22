@@ -85,8 +85,6 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
     
     return "Succesfully sent data"
 
-# TODO: Queue behaviour implementation (using created_at() time to fetch the oldest data first)
-
 
 @mcp.tool()
 def get_data(headers: CurrentHeaders) -> Data:
@@ -98,7 +96,7 @@ def get_data(headers: CurrentHeaders) -> Data:
     sender: The name of the sender.
     data: The data sent by the sender.
     """
-    # TODO: Implement your logic to fetch data here.
+    # TODO: Implement your logic to fetch data here (Oldest data first).
 
     pass
 
