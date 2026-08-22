@@ -85,7 +85,6 @@ def send_data(headers: CurrentHeaders, data: str) -> str:
     
     token = validate_auth_token(headers)
 
-    # Validate input - don't trust user input, check for code injection
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
 
@@ -95,7 +94,7 @@ def send_data(headers: CurrentHeaders, data: str) -> str:
 
     # TODO: Validate data for malicious script injection.
 
-    # Send the data to Supabase for relaying to other AI Agents/Services
+    # Sending the data
     try:
         response = (
             supabase.table("Queue")
@@ -105,7 +104,6 @@ def send_data(headers: CurrentHeaders, data: str) -> str:
     except Exception as e:
         return f"Failed to send data: {e}"
 
-    # Supabase returns 201 on successful insert; treat any 2xx as success
     if response is None or not (200 <= getattr(response, "status_code", 0) < 300):
         return "Failed to send data: unexpected response from server"
 
@@ -122,6 +120,14 @@ def get_data(headers: CurrentHeaders) -> Data:
     sender: The name of the agent that sent the data.
     data: The data sent by the sender.
     """
+
+    if validate_auth_token(headers) is None:
+        return "Authorization header is missing or invalid. Please provide a valid Bearer token."
+    
+    token = validate_auth_token(headers)
+
+    if not is_safe_data(token, "auth-token"):
+        return "Authorization header contains potentially dangerous code patterns"
 
     # TODO: Implement your logic to fetch data here (Oldest data first).
 
