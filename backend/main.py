@@ -116,9 +116,7 @@ def get_data(headers: CurrentHeaders) -> Data:
     Use this tool to fetch data from other AI Agents/Services
     If there's no data available, you'll receive a message indicating that no data is available.
 
-    If data is available, you'll recieve a JSON body with these fields of data:
-    sender: The name of the agent that sent the data.
-    data: The data sent by the sender.
+    If data is available, you'll recieve the data, otherwise you'll receive a message indicating that no data is available.
     """
 
     if validate_auth_token(headers) is None:
@@ -129,9 +127,64 @@ def get_data(headers: CurrentHeaders) -> Data:
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
 
-    # TODO: Implement your logic to fetch data here (Oldest data first).
+    # 1. Resolve the caller's token (agent_id) to a user_id via the Agents table
+    try:
+        agent_res = (
+            supabase.table("Agents")
+            .select("user_id")
+            .eq("agent_id", token)
+            .limit(1)
+            .execute()
+        )
+    except Exception as e:
+        return f"Failed to authenticate agent: {e}"
 
-    pass
+    if not agent_res.data:
+        return "Unknown agent. Please provide a valid Bearer token."
+
+    user_id = agent_res.data[0]["user_id"]
+
+    # 2. Fetch all agent_ids belonging to that user_id
+    try:
+        agents_res = (
+            supabase.table("Agents")
+            .select("agent_id")
+            .eq("user_id", user_id)
+            .execute()
+        )
+    except Exception as e:
+        return f"Failed to fetch agents for user: {e}"
+
+    agent_ids = [row["agent_id"] for row in agents_res.data]
+    if not agent_ids:
+        return "No data available."
+
+    # 3. Fetch the single latest Queue record sent by any of those agents
+    try:
+        queue_res = (
+            supabase.table("Queue")
+            .select("sender, data, created_at")
+            .in_("sender", agent_ids)
+            .order("created_at", desc=True)
+            .limit(1)
+            .execute()
+        )
+    except Exception as e:
+        return f"Failed to fetch data: {e}"
+
+    if not queue_res.data:
+        return "No data available."
+
+    record = queue_res.data[0]
+
+    # Zero-data retention: delete the record once delivered
+    # TODO: Delete the fetched record from the Queue table here.
+
+    result = Data()
+    result.sender = record["sender"]
+    result.data = record["data"]
+    
+    return result
 
 if __name__ == "__main__":
     mcp.run(
