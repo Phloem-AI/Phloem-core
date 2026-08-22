@@ -14,11 +14,26 @@ class Data:
     sender: str
     data: str
 
-
+# Initialize Supabase client
 supabase: Client = None
 supabase_url = os.getenv("SUPABASE_URL")    
 supabase_key = os.getenv("SUPABASE_PUBLISHABLE_KEY")  
 supabase = create_client(supabase_url, supabase_key)
+
+#Utility functions
+def is_safe_data(value: str) -> bool:
+    dangerous_patterns = [
+        "import ", "from ", "def ", "class ", "print(", 
+        "SELECT ", "INSERT ", "UPDATE ", "DELETE ", "DROP ",
+        "function ", "var ", "let ", "const ", "=> ",
+        "`", "$(", ";", "|", "&",
+    ]
+    
+    value_lower = value.lower()
+    for pattern in dangerous_patterns:
+        if pattern.lower() in value_lower:
+            return False
+    return True
 
 
 @mcp.tool()
@@ -39,19 +54,7 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
         return "Invalid Authorization header"
 
     # Validate input - don't trust user input, check for code injection
-    def is_safe_data(value: str) -> bool:
-        dangerous_patterns = [
-            "import ", "from ", "def ", "class ", "print(", 
-            "SELECT ", "INSERT ", "UPDATE ", "DELETE ", "DROP ",
-            "function ", "var ", "let ", "const ", "=> ",
-            "`", "$(", ";", "|", "&",
-        ]
-        
-        value_lower = value.lower()
-        for pattern in dangerous_patterns:
-            if pattern.lower() in value_lower:
-                return False
-        return True
+
 
     if not is_safe_data(token):
             return "Authorization header contains potentially dangerous code patterns"
