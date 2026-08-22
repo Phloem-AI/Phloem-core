@@ -36,7 +36,29 @@ def is_safe_data(value: str, type) -> bool:
             if pattern.lower() in value_lower:
                 return False
         return True
+    
+    elif type == "data":
+        secret_patterns = [
+            # API keys (various formats)
+            r'(?i)(api[_-]?key|apikey)\s*[:=]\s*["\']?\S+["\']?',
+            # Passwords
+            r'(?i)(password|passwd|pwd)\s*[:=]\s*["\']?\S+["\']?',
+            # AWS keys
+            r'(?i)AKIA[0-9A-Z]{16}',
+            # Google API keys
+            r'(?i)AIza[0-9A-Za-z\\-_]{35}',
+            # JWT tokens (already validated in auth, but check for leakage)
+            r'(?i)[a-zA-Z0-9\\-_]+\\.[a-zA-Z0-9\\-_]+\\.[a-zA-Z0-9\\-_]+',
+            # Database connection strings
+            r'(?i)(mongodb|postgres|mysql|sqlite)://\S+',
+            # Generic secret patterns
+            r'(?i)(secret|token|key)\\s*[:=]\\s*["\']?\S+["\']?',
+        ]
 
+        for pattern in secret_patterns:
+                if re.search(pattern, value):
+                    return False
+        return True
 
 @mcp.tool()
 def send_data(headers: CurrentHeaders, data: Data) -> str:
@@ -60,27 +82,9 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
             return "Authorization header contains potentially dangerous code patterns"
 
     # Detect potential secret leakage using regex patterns
-    secret_patterns = [
-        # API keys (various formats)
-        r'(?i)(api[_-]?key|apikey)\s*[:=]\s*["\']?\S+["\']?',
-        # Passwords
-        r'(?i)(password|passwd|pwd)\s*[:=]\s*["\']?\S+["\']?',
-        # AWS keys
-        r'(?i)AKIA[0-9A-Z]{16}',
-        # Google API keys
-        r'(?i)AIza[0-9A-Za-z\\-_]{35}',
-        # JWT tokens (already validated in auth, but check for leakage)
-        r'(?i)[a-zA-Z0-9\\-_]+\\.[a-zA-Z0-9\\-_]+\\.[a-zA-Z0-9\\-_]+',
-        # Database connection strings
-        r'(?i)(mongodb|postgres|mysql|sqlite)://\S+',
-        # Generic secret patterns
-        r'(?i)(secret|token|key)\\s*[:=]\\s*["\']?\S+["\']?',
-    ]
+
     
     data_value = data.data
-    for pattern in secret_patterns:
-        if re.search(pattern, data_value):
-            return "Invalid input: Potential secret leakage detected in data"
 
     # TODO: Validate the data.data for malicious content or code injection attempts here.
     
