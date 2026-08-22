@@ -20,6 +20,17 @@ supabase_key = os.getenv("SUPABASE_PUBLISHABLE_KEY")
 supabase = create_client(supabase_url, supabase_key)
 
 #Utility functions
+def validate_auth_token(headers):
+    auth = headers.get("authorization")
+    if not auth:
+        return None
+
+    scheme, _, token = auth.partition(" ")
+    if scheme.lower() != "bearer" or not token:
+        return None
+
+    return token
+
 def is_safe_data(value: str, type: str) -> bool:
 
     if type == "auth-token":
@@ -69,15 +80,8 @@ def send_data(headers: CurrentHeaders, data: str) -> str:
     You'll recieve a response indicating whether the data was successfully sent or if there was an error.
     """
 
-    auth = headers.get("authorization")
-    if not auth:
-        return "Missing Authorization header"
-
-    scheme, _, token = auth.partition(" ")
-    if scheme.lower() != "bearer" or not token:
-        return "Invalid Authorization header"
-
     # Validate input - don't trust user input, check for code injection
+    token = validate_auth_token(headers)
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
 
@@ -114,6 +118,7 @@ def get_data(headers: CurrentHeaders) -> Data:
     sender: The name of the agent that sent the data.
     data: The data sent by the sender.
     """
+
     # TODO: Implement your logic to fetch data here (Oldest data first).
 
     pass
@@ -127,7 +132,6 @@ if __name__ == "__main__":
             Middleware(
                 CORSMiddleware,
                 allow_origins=["*"],
-                allow_credentials=True,
                 allow_methods=["*"],
                 allow_headers=["*"],
             )
