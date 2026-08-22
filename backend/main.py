@@ -177,8 +177,7 @@ def get_data(headers: CurrentHeaders) -> Data:
 
     record = queue_res.data[0]
 
-    # Zero-data retention: delete the record once delivered
-    # TODO: Delete the fetched record from the Queue table here.
+    # TODO: Zero-data retention: Delete the fetched record from the Queue table here.
 
     result = Data()
     result.sender = record["sender"]
