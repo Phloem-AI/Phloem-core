@@ -21,7 +21,7 @@ supabase_key = os.getenv("SUPABASE_PUBLISHABLE_KEY")
 supabase = create_client(supabase_url, supabase_key)
 
 #Utility functions
-def is_safe_data(value: str, type) -> bool:
+def is_safe_data(value: str, type: str) -> bool:
 
     if type == "auth-token":
         dangerous_patterns = [
@@ -35,8 +35,7 @@ def is_safe_data(value: str, type) -> bool:
         for pattern in dangerous_patterns:
             if pattern.lower() in value_lower:
                 return False
-        return True
-    
+        return True 
     elif type == "data":
         secret_patterns = [
             # API keys (various formats)
@@ -59,6 +58,7 @@ def is_safe_data(value: str, type) -> bool:
                 if re.search(pattern, value):
                     return False
         return True
+    
 
 @mcp.tool()
 def send_data(headers: CurrentHeaders, data: Data) -> str:
@@ -79,12 +79,14 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
 
     # Validate input - don't trust user input, check for code injection
     if not is_safe_data(token, "auth-token"):
-            return "Authorization header contains potentially dangerous code patterns"
+        return "Authorization header contains potentially dangerous code patterns"
 
-    # Detect potential secret leakage using regex patterns
-
-    
     data_value = data.data
+    # Detect potential secret leakage using regex patterns
+    if not is_safe_data(data_value, "data"):
+        return "Data contains potentially dangerous code patterns"
+    
+    
 
     # TODO: Validate the data.data for malicious content or code injection attempts here.
     
