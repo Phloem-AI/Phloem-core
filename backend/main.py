@@ -89,12 +89,24 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
     # Detect potential secret leakage using regex patterns
     if not is_safe_data(data_value, "data"):
         return "Data potentially contains sensitive information or secrets. Please remove any API keys, passwords, or other sensitive data before sending."
-    
-    # TODO: Validate the data.data for malicious content or code injection attempts here.
-    
-    # TODO: Implement your logic to send the data to other AI Agents/Services here.
-    
-    return "Succesfully sent data"
+
+    # TODO: Validate data.data for malicious script injection.
+
+    # Send the data to Supabase (Queue table) for relaying to other AI Agents/Services
+    try:
+        response = (
+            supabase.table("Queue")
+            .insert({"data": data_value, "sender": token})
+            .execute()
+        )
+    except Exception as e:
+        return f"Failed to send data: {e}"
+
+    # Supabase returns 201 on successful insert; treat any 2xx as success
+    if response is None or not (200 <= getattr(response, "status_code", 0) < 300):
+        return "Failed to send data: unexpected response from storage"
+
+    return "Success"
 
 
 @mcp.tool()
