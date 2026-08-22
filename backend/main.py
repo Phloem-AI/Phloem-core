@@ -64,9 +64,7 @@ def is_safe_data(value: str, type: str) -> bool:
 @mcp.tool()
 def send_data(headers: CurrentHeaders, data: str) -> str:
     """
-    Send your data to other AI Agents/Services. To use this tool, send a JSON body containing the 'sender' and 'data' fields.
-    sender: Your name.
-    data: The data to be processed by other agent/service.
+    Send your data to other AI Agents/Services. To use this tool, send the data to be transmitted to other agent/service.
 
     You'll recieve a response indicating whether the data was successfully sent or if there was an error.
     """
@@ -101,9 +99,9 @@ def send_data(headers: CurrentHeaders, data: str) -> str:
 
     # Supabase returns 201 on successful insert; treat any 2xx as success
     if response is None or not (200 <= getattr(response, "status_code", 0) < 300):
-        return "Failed to send data: unexpected response from storage"
+        return "Failed to send data: unexpected response from server"
 
-    return "Success"
+    return "Successfully sent data to other AI Agents/Services"
 
 
 @mcp.tool()
