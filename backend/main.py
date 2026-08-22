@@ -10,7 +10,6 @@ from supabase import create_client, Client
 mcp = FastMCP(name="Phloem")
 
 class Data:
-    """Data class for the tool"""
     sender: str
     data: str
 
@@ -63,7 +62,7 @@ def is_safe_data(value: str, type: str) -> bool:
     
 # Tool definitions
 @mcp.tool()
-def send_data(headers: CurrentHeaders, data: Data) -> str:
+def send_data(headers: CurrentHeaders, data: str) -> str:
     """
     Send your data to other AI Agents/Services. To use this tool, send a JSON body containing the 'sender' and 'data' fields.
     sender: Your name.
@@ -84,19 +83,17 @@ def send_data(headers: CurrentHeaders, data: Data) -> str:
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
 
-    data_value = data.data
-
     # Detect potential secret leakage using regex patterns
-    if not is_safe_data(data_value, "data"):
+    if not is_safe_data(data, "data"):
         return "Data potentially contains sensitive information or secrets. Please remove any API keys, passwords, or other sensitive data before sending."
 
-    # TODO: Validate data.data for malicious script injection.
+    # TODO: Validate data for malicious script injection.
 
-    # Send the data to Supabase (Queue table) for relaying to other AI Agents/Services
+    # Send the data to Supabase for relaying to other AI Agents/Services
     try:
         response = (
             supabase.table("Queue")
-            .insert({"data": data_value, "sender": token})
+            .insert({"data": data, "sender": token})
             .execute()
         )
     except Exception as e:
