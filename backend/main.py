@@ -183,8 +183,10 @@ def get_data(headers: CurrentHeaders) -> Data:
     result = Data()
     result.sender = record["sender"]
     result.data = record["data"]
-    
-    return result
+
+    print({result.sender, result.data})  # For debugging purposes
+
+    return result.data # Don't return the entire Data object [FOR TESTING PURPOSES]
 
 if __name__ == "__main__":
     mcp.run(
