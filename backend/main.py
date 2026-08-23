@@ -4,7 +4,11 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
 import os
 import re
+from dotenv import load_dotenv
 from supabase import create_client, Client
+
+# Load environment variables from .env (if present)
+load_dotenv()
 
 
 mcp = FastMCP(name="Phloem")
@@ -14,10 +18,14 @@ class Data:
     data: str
 
 # Initialize Supabase client
-supabase: Client = None
-supabase_url = os.getenv("SUPABASE_URL")    
-supabase_key = os.getenv("SUPABASE_PUBLISHABLE_KEY")  
-supabase = create_client(supabase_url, supabase_key)
+supabase_url = os.getenv("SUPABASE_URL")
+supabase_key = os.getenv("SUPABASE_PUBLISHABLE_KEY")
+if not supabase_url or not supabase_key:
+    raise RuntimeError(
+        "Missing SUPABASE_URL or SUPABASE_PUBLISHABLE_KEY. "
+        "Set them in backend/.env (see .env.example) or in your environment."
+    )
+supabase: Client = create_client(supabase_url, supabase_key)
 
 #Utility functions
 def validate_auth_token(headers):
