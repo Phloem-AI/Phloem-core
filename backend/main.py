@@ -177,7 +177,11 @@ def get_data(headers: CurrentHeaders) -> Data:
 
     record = queue_res.data[0]
 
-    # TODO: Zero-data retention: Delete the fetched record from the Queue table here.
+    # Zero-data retention: delete the fetched record from the Queue table
+    try:
+        supabase.table("Queue").delete().eq("created_at", record["created_at"]).execute()
+    except Exception as e:
+        return f"Failed to delete delivered data: {e}"
 
     result = Data()
     result.sender = record["sender"]
