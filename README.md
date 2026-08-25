@@ -27,11 +27,11 @@ Phloem is meant to make those handoffs explicit, policy-driven, and machine-chec
 
 # Quick Start Guide
 
-### Hosted Version
+### → Hosted Version
 
 Get Phloem now through the [website](phloem-ai.netlify.app)
 
-### Local Setup 
+### → Local Setup 
 
 **Prerequisite:** Install python 
 
