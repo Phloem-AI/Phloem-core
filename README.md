@@ -56,7 +56,7 @@ This runs the server on *localhost:8000*
 
 Apache License 2.0
 
-See the [LICENSE.md](./LICENSE.md) file for the full text.
+See the [LICENSE.md](./LICENSE) file for the full text.
 
 ## Contributing
 
