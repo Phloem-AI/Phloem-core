@@ -4,7 +4,6 @@ Using different AI Agents for different parts of your work?
 
 Phloem makes those **agents collaborate autonomously**. So when one Agent writes project plan, you don't have to paste it manually into the other Agent to implement it. Phloem will do it for you (for free!).
 
-
 ## Features
 
 1. **Agent Interoperability:** Supports mainstream AI Agents to communicate with each other. 
@@ -12,23 +11,17 @@ Phloem makes those **agents collaborate autonomously**. So when one Agent writes
 3. **Secrets Management:** Securely conveys the necessary data, extracts out confidential information.
 4. **Zero-Data Retention:** Stores data during communication — deletes once the message is transferred to the destined agent.
 
-## What Phloem Is
+## Why Phloem Exists
 
-Phloem is an MCP-native semantic context firewall for cross-vendor agent handoffs.
+Most agent-to-agent coordination breaks down in the same places:
 
-It is not:
+- different vendors use different vocabularies for the same business concept
+- handoffs lose meaning when context is copied loosely between systems
+- agents can collide on the same task or overwrite each other’s work
+- sensitive data can leak into the wrong place if policies are implicit
+- audit trails are often incomplete or unavailable
 
-- a generic MCP proxy
-- a full agent orchestration platform
-- a marketplace for agents
-- a vendor-specific integration layer that depends on one ecosystem
-
-## Current Scope
-
-The MVP focuses on the core open-source server:
-
-1. semantic handoff contracts
-2. context firewall and sanitization
+Phloem is meant to make those handoffs explicit, policy-driven, and machine-checkable.
 
 ## Local Setup Guide
 
