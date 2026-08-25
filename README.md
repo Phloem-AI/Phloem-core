@@ -2,7 +2,7 @@
 
 Using different AI Agents for different parts of your work?
 
-It is designed to help one agent hand work to another with explicit semantics, policy enforcement, and auditability. 
+Phloem makes those **agents collaborate autonomously**. So when one Agent writes project plan, you don't have to paste it manually into the other Agent to implement it. Phloem will do it for you while you focus on things that are valuable.
 
 ## Why Phloem Exists
 
