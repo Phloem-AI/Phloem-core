@@ -49,11 +49,13 @@ Run the MCP server by: ```python main.py```
 
 This runs the server on *localhost:8000*
 
+---
+
 ## License
 
 Apache License 2.0
 
-See the `LICENSE` file for the full text.
+See the [LICENSE.md](./LICENSE.md) file for the full text.
 
 ## Contributing
 
