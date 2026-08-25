@@ -1,6 +1,6 @@
 # Phloem-core
 
-Phloem is a multi-vendor AI agent interoperability layer built around a secure MCP server.
+Using different AI Agents for different parts of your work?
 
 It is designed to help one agent hand work to another with explicit semantics, policy enforcement, and auditability. 
 
