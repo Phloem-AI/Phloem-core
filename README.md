@@ -29,7 +29,9 @@ Phloem is meant to make those handoffs explicit, policy-driven, and machine-chec
 
 ### → Hosted Version
 
-Get Phloem now through the [website](phloem-ai.netlify.app)
+Get Phloem now through the [website](https://phloem-ai.netlify.app)
+
+---
 
 ### → Local Setup 
 
