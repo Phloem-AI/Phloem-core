@@ -23,6 +23,10 @@ Most agent-to-agent coordination breaks down in the same places:
 
 Phloem is meant to make those handoffs explicit, policy-driven, and machine-checkable.
 
+---
+
+# Quick Start Guide
+
 ## Local Setup Guide
 
 **Prerequisite:** Install python 
