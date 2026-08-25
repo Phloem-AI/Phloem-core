@@ -29,7 +29,7 @@ Phloem is meant to make those handoffs explicit, policy-driven, and machine-chec
 
 ### Hosted Version
 
-Get Phloem now through the [website]p(hloem-ai.netlify.app)
+Get Phloem now through the [website](phloem-ai.netlify.app)
 
 ### Local Setup 
 
