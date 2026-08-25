@@ -2,7 +2,7 @@
 
 Phloem is a multi-vendor AI agent interoperability layer built around a secure MCP server.
 
-It is designed to help one agent hand work to another with explicit semantics, policy enforcement, and auditability. The open-source core in this repository is licensed under Apache-2.0. The website and private frontend live in a separate proprietary repository.
+It is designed to help one agent hand work to another with explicit semantics, policy enforcement, and auditability. 
 
 ## Why Phloem Exists
 
