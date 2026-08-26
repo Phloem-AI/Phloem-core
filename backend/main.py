@@ -18,8 +18,6 @@ class Data:
     data: str
 
 # Initialize Supabase client
-# SUPABASE_KEY can be either the publishable (anon) key — subject to RLS —
-# or the secret (service) key — bypasses RLS, server-side use only.
 supabase_url = os.getenv("SUPABASE_URL")
 supabase_key = os.getenv("SUPABASE_KEY")
 if not supabase_url or not supabase_key:
