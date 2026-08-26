@@ -18,11 +18,13 @@ class Data:
     data: str
 
 # Initialize Supabase client
+# SUPABASE_KEY can be either the publishable (anon) key — subject to RLS —
+# or the secret (service) key — bypasses RLS, server-side use only.
 supabase_url = os.getenv("SUPABASE_URL")
-supabase_key = os.getenv("SUPABASE_PUBLISHABLE_KEY")
+supabase_key = os.getenv("SUPABASE_KEY")
 if not supabase_url or not supabase_key:
     raise RuntimeError(
-        "Missing SUPABASE_URL or SUPABASE_PUBLISHABLE_KEY. "
+        "Missing SUPABASE_URL or SUPABASE_KEY. "
         "Set them in backend/.env (see .env.example) or in your environment."
     )
 supabase: Client = create_client(supabase_url, supabase_key)
