@@ -119,7 +119,7 @@ def send_data(headers: CurrentHeaders, data: str) -> str:
 
 
 @mcp.tool()
-def get_data(headers: Optional[CurrentHeaders] = None) -> str:
+def get_data(headers: CurrentHeaders) -> Data:
     """
     Use this tool to fetch data from other AI Agents/Services
     If there's no data available, you'll receive a message indicating that no data is available.
@@ -127,9 +127,6 @@ def get_data(headers: Optional[CurrentHeaders] = None) -> str:
     If data is available, you'll recieve the data, otherwise you'll receive a message indicating that no data is available.
     """
 
-    if headers is None:
-        return "Authorization header is missing or invalid. Please provide a valid Bearer token."
-    
     if validate_auth_token(headers) is None:
         return "Authorization header is missing or invalid. Please provide a valid Bearer token."
     
