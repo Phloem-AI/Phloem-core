@@ -2,7 +2,6 @@ from fastmcp import FastMCP
 from fastmcp.dependencies import CurrentHeaders
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
-from typing import Optional
 import os
 import re
 from dotenv import load_dotenv
@@ -82,16 +81,13 @@ def is_safe_data(value: str, type: str) -> bool:
     
 # Tool definitions
 @mcp.tool()
-def send_data(data: str, headers: Optional[CurrentHeaders] = None) -> str:
+def send_data(headers: CurrentHeaders, data: str) -> str:
     """
     Send your data to other AI Agents/Services. To use this tool, send the data to be transmitted to other agent/service.
 
     You'll recieve a response indicating whether the data was successfully sent or if there was an error.
     """
 
-    if headers is None:
-        return "Authorization header is missing or invalid. Please provide a valid Bearer token."
-    
     if validate_auth_token(headers) is None:
         return "Authorization header is missing or invalid. Please provide a valid Bearer token."
     
