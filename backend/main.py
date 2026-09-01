@@ -189,8 +189,10 @@ def get_data() -> str:
         return f"Failed to delete delivered data: {e}"
 
     result = Data()
-    result.sender = record["sender"]
+    result.sender = record["sender"] # → This is raw Agent ID, NEVER RETURN THIS
     result.data = record["data"]
+
+    # TODO: Fetch agent's name using the result.sender from Agents table and return that instead of the raw Agent ID. This will require an additional query to the Agents table.
 
     return result.data # Don't return the entire Data object just yet.
 
