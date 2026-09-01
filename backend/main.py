@@ -1,11 +1,23 @@
 from fastmcp import FastMCP
 from fastmcp.server.dependencies import get_access_token
+from fastmcp.server.auth.providers.debug import DebugTokenVerifier
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
 import os
 import re
 from dotenv import load_dotenv
 from supabase import create_client, Client
+
+def validate_token(token: str) -> bool:
+    # Look up your custom token in the database
+        pass
+    return True
+
+auth = DebugTokenVerifier(
+    validate=validate_token,
+    client_id="your-client-id",
+    scopes=["read", "write"],
+)
 
 # Load environment variables from .env (if present)
 load_dotenv()
