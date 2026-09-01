@@ -197,8 +197,6 @@ def get_data() -> str:
 
     return result.data # Don't return the entire Data object just yet.
 
-app = mcp.http_app
-
 if __name__ == "__main__":
     mcp.run(
         transport="http",
