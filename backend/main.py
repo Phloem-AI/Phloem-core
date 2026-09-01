@@ -75,7 +75,7 @@ def send_data(data: str) -> str:
 
     token = raw_token.token
 
-    print(token)
+    print(token)    # Testing purposes ONLY
 
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
@@ -116,7 +116,7 @@ def get_data() -> Data:
 
     token = raw_token.token
 
-    print(token)
+    print(token)    # Testing purposes ONLY
 
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
