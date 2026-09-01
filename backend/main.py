@@ -1,6 +1,5 @@
 from fastmcp import FastMCP
 from fastmcp.server.dependencies import get_access_token
-from fastmcp.dependencies import CurrentHeaders
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
 import os
@@ -89,7 +88,7 @@ def send_data(data: str) -> str:
     if validate_auth_token() is None:
         return "Authorization header is missing or invalid. Please provide a valid Bearer token."
     
-    token = "placeholder"
+    token = validate_auth_token()
 
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
@@ -128,7 +127,7 @@ def get_data() -> Data:
     if validate_auth_token() is None:
         return "Authorization header is missing or invalid. Please provide a valid Bearer token."
     
-    token = "placeholder"
+    token = validate_auth_token()
 
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
