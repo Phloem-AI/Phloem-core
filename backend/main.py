@@ -8,6 +8,9 @@ import re
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
+# Load environment variables from .env (if present)
+load_dotenv()
+
 # Initialize Supabase client
 supabase_url = os.getenv("SUPABASE_URL")
 supabase_key = os.getenv("SUPABASE_KEY")
@@ -38,9 +41,6 @@ auth = DebugTokenVerifier(
     client_id="phloem-client",
     scopes=["read", "write"],
 )
-
-# Load environment variables from .env (if present)
-load_dotenv()
 
 mcp = FastMCP(name="Phloem", auth=auth)
 
