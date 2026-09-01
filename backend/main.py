@@ -108,16 +108,9 @@ def send_data(data: str) -> str:
     # TODO: Validate data for malicious script injection.
 
     try:
-        response = (
-            supabase.table("Queue")
-            .insert({"data": data, "sender": token})
-            .execute()
-        )
+        supabase.table("Queue").insert({"data": data, "sender": token}).execute()
     except Exception as e:
         return f"Failed to send data: {e}"
-
-    if response is None or not (200 <= getattr(response, "status_code", 0) < 300):
-        return "Failed to send data: unexpected response from server"
 
     return "Successfully sent data to other AI Agents/Services"
 
@@ -153,7 +146,7 @@ def get_data() -> Data:
             .execute()
         )
     except Exception as e:
-        return f"Failed to authenticate agent: {e}"
+        return f"Failed to authenticate agent"
 
     if not agent_res.data:
         return "Unknown agent. Please provide a valid Bearer token."
@@ -169,7 +162,7 @@ def get_data() -> Data:
             .execute()
         )
     except Exception as e:
-        return f"Failed to fetch agents for user: {e}"
+        return f"Failed to fetch agents for user"
 
     agent_ids = [row["agent_id"] for row in agents_res.data]
     if not agent_ids:
@@ -186,7 +179,7 @@ def get_data() -> Data:
             .execute()
         )
     except Exception as e:
-        return f"Failed to fetch data: {e}"
+        return f"Failed to fetch data"
 
     if not queue_res.data:
         return "No data available."
