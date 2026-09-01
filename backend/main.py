@@ -1,6 +1,5 @@
 from fastmcp import FastMCP
 from fastmcp.server.dependencies import get_access_token
-from fastmcp.dependencies import CurrentHeaders
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
 import os
@@ -10,7 +9,6 @@ from supabase import create_client, Client
 
 # Load environment variables from .env (if present)
 load_dotenv()
-
 
 mcp = FastMCP(name="Phloem")
 
@@ -29,16 +27,13 @@ if not supabase_url or not supabase_key:
 supabase: Client = create_client(supabase_url, supabase_key)
 
 #Utility functions
-def validate_auth_token(headers):
-    auth = headers.get("authorization")
-    if not auth:
-        return None
+def validate_auth_token():
+    token = get_access_token()
 
-    scheme, _, token = auth.partition(" ")
-    if scheme.lower() != "bearer" or not token:
+    if token is None:
         return None
-
-    return token
+    
+    return token.token
 
 def is_safe_data(value: str, type: str) -> bool:
 
@@ -59,19 +54,12 @@ def is_safe_data(value: str, type: str) -> bool:
     elif type == "data":
 
         secret_patterns = [
-            # API keys (various formats)
             r'(?i)(api[_-]?key|apikey)\s*[:=]\s*["\']?\S+["\']?',
-            # Passwords
             r'(?i)(password|passwd|pwd)\s*[:=]\s*["\']?\S+["\']?',
-            # AWS keys
             r'(?i)AKIA[0-9A-Z]{16}',
-            # Google API keys
             r'(?i)AIza[0-9A-Za-z\\-_]{35}',
-            # JWT tokens (already validated in auth, but check for leakage)
             r'(?i)[a-zA-Z0-9\\-_]+\\.[a-zA-Z0-9\\-_]+\\.[a-zA-Z0-9\\-_]+',
-            # Database connection strings
             r'(?i)(mongodb|postgres|mysql|sqlite)://\S+',
-            # Generic secret patterns
             r'(?i)(secret|token|key)\\s*[:=]\\s*["\']?\S+["\']?',
         ]
 
@@ -92,18 +80,16 @@ def send_data(data: str) -> str:
     if validate_auth_token() is None:
         return "Authorization header is missing or invalid. Please provide a valid Bearer token."
     
-    token = "placeholder"
+    token = validate_auth_token()
 
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
 
-    # Detect potential secret leakage using regex patterns
     if not is_safe_data(data, "data"):
         return "Data potentially contains sensitive information or secrets. Please remove any API keys, passwords, or other sensitive data before sending."
 
     # TODO: Validate data for malicious script injection.
 
-    # Sending the data
     try:
         response = (
             supabase.table("Queue")
@@ -131,7 +117,7 @@ def get_data() -> Data:
     if validate_auth_token() is None:
         return "Authorization header is missing or invalid. Please provide a valid Bearer token."
     
-    token = "placeholder"
+    token = validate_auth_token()
 
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
