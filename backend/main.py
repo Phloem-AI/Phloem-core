@@ -28,13 +28,10 @@ def validate_token(token: str) -> bool:
                 .limit(1)
                 .execute()
             )
-        except Exception as e:
-            return f"Failed to authenticate agent: {e}"
+        except Exception:
+            return False
 
-        if not agent_res.data:
-            return "Unknown agent. Please provide a valid Bearer token."
-
-    return True
+    return bool(agent_res.data)
 
 auth = DebugTokenVerifier(
     validate=validate_token,
