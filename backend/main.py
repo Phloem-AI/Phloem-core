@@ -8,26 +8,6 @@ import re
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
-def validate_token(token: str) -> bool:
-    # Look up your custom token in the database
-        pass
-    return True
-
-auth = DebugTokenVerifier(
-    validate=validate_token,
-    client_id="your-client-id",
-    scopes=["read", "write"],
-)
-
-# Load environment variables from .env (if present)
-load_dotenv()
-
-mcp = FastMCP(name="Phloem")
-
-class Data:
-    sender: str
-    data: str
-
 # Initialize Supabase client
 supabase_url = os.getenv("SUPABASE_URL")
 supabase_key = os.getenv("SUPABASE_KEY")
@@ -37,6 +17,39 @@ if not supabase_url or not supabase_key:
         "Set them in backend/.env (see .env.example) or in your environment."
     )
 supabase: Client = create_client(supabase_url, supabase_key)
+
+def validate_token(token: str) -> bool:
+    # Look up your custom token in the database
+        try:
+            agent_res = (
+                supabase.table("Agents")
+                .select("user_id")
+                .eq("agent_id", token)
+                .limit(1)
+                .execute()
+            )
+        except Exception as e:
+            return f"Failed to authenticate agent: {e}"
+
+        if not agent_res.data:
+            return "Unknown agent. Please provide a valid Bearer token."
+
+    return True
+
+auth = DebugTokenVerifier(
+    validate=validate_token,
+    client_id="phloem-client",
+    scopes=["read", "write"],
+)
+
+# Load environment variables from .env (if present)
+load_dotenv()
+
+mcp = FastMCP(name="Phloem", auth=auth)
+
+class Data:
+    sender: str
+    data: str
 
 def is_safe_data(value: str, type: str) -> bool:
 
