@@ -77,10 +77,12 @@ def send_data(data: str) -> str:
     You'll recieve a response indicating whether the data was successfully sent or if there was an error.
     """
 
-    if validate_auth_token() is None:
+    raw_token = get_access_token()
+
+    if token is None:
         return "Authorization header is missing or invalid. Please provide a valid Bearer token."
-    
-    token = validate_auth_token()
+
+    print(token.token)
 
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
