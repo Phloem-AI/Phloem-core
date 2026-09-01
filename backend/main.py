@@ -109,10 +109,14 @@ def get_data() -> Data:
     If data is available, you'll recieve the data, otherwise you'll receive a message indicating that no data is available.
     """
 
-    if validate_auth_token() is None:
+    raw_token = get_access_token()
+
+    if raw_token is None:
         return "Authorization header is missing or invalid. Please provide a valid Bearer token."
-    
-    token = validate_auth_token()
+
+    token = raw_token.token
+
+    print(token)
 
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
