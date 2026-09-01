@@ -29,16 +29,13 @@ if not supabase_url or not supabase_key:
 supabase: Client = create_client(supabase_url, supabase_key)
 
 #Utility functions
-def validate_auth_token(headers):
-    auth = headers.get("authorization")
-    if not auth:
-        return None
+def validate_auth_token():
+    token = get_access_token()
 
-    scheme, _, token = auth.partition(" ")
-    if scheme.lower() != "bearer" or not token:
+    if token is None:
         return None
-
-    return token
+    
+    return token.token
 
 def is_safe_data(value: str, type: str) -> bool:
 
