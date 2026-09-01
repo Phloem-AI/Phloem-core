@@ -97,8 +97,6 @@ def send_data(data: str) -> str:
 
     token = raw_token.token
 
-    print(token)    # Testing purposes ONLY
-
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
 
@@ -116,7 +114,7 @@ def send_data(data: str) -> str:
 
 
 @mcp.tool()
-def get_data() -> Data:
+def get_data() -> str:
     """
     Use this tool to fetch data from other AI Agents/Services
     If there's no data available, you'll receive a message indicating that no data is available.
@@ -130,8 +128,6 @@ def get_data() -> Data:
         return "Authorization header is missing or invalid. Please provide a valid Bearer token."
 
     token = raw_token.token
-
-    print(token)    # Testing purposes ONLY
 
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
@@ -196,9 +192,7 @@ def get_data() -> Data:
     result.sender = record["sender"]
     result.data = record["data"]
 
-    print({result.sender, result.data})  # For debugging purposes
-
-    return result.data # Don't return the entire Data object [FOR TESTING PURPOSES]
+    return result.data # Don't return the entire Data object just yet.
 
 if __name__ == "__main__":
     mcp.run(
