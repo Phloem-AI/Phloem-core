@@ -36,17 +36,17 @@ Get Phloem now through the [website](https://phloem-ai.netlify.app)
 
 **Prerequisite:** Install python 
 
-Clone the repo & *cd in backend*, then run ```python -m venv venv```
+Clone the repo, then run ```python -m venv venv```
 
 Activate the venv, and then run ```pip install -r requirements.txt```
 
-Setup the *.env* file:
+Setup the *.env* file (*cd in backend*):
 
 ```
 cp .env.example .env
 ```
 
-Run the MCP server by: ```python main.py```
+Run the MCP server by: ```python backend/main.py```
 
 This runs the server on *localhost:8000*
 
