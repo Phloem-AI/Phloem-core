@@ -26,15 +26,6 @@ if not supabase_url or not supabase_key:
     )
 supabase: Client = create_client(supabase_url, supabase_key)
 
-#Utility functions
-def validate_auth_token():
-    token = get_access_token()
-
-    if token is None:
-        return None
-    
-    return token.token
-
 def is_safe_data(value: str, type: str) -> bool:
 
     if type == "auth-token":
@@ -79,10 +70,12 @@ def send_data(data: str) -> str:
 
     raw_token = get_access_token()
 
-    if token is None:
+    if raw_token is None:
         return "Authorization header is missing or invalid. Please provide a valid Bearer token."
 
-    print(token.token)
+    token = raw_token.token
+
+    print(token)
 
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
