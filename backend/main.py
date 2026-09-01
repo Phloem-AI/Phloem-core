@@ -20,16 +20,16 @@ supabase: Client = create_client(supabase_url, supabase_key)
 
 def validate_token(token: str) -> bool:
     # Look up your custom token in the database
-        try:
-            agent_res = (
-                supabase.table("Agents")
-                .select("user_id")
-                .eq("agent_id", token)
-                .limit(1)
-                .execute()
-            )
-        except Exception:
-            return False
+    try:
+        agent_res = (
+            supabase.table("Agents")
+            .select("user_id")
+            .eq("agent_id", token)
+            .limit(1)
+            .execute()
+        )
+    except Exception:
+        return False
 
     return bool(agent_res.data)
 
