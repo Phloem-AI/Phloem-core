@@ -1,4 +1,5 @@
 from fastmcp import FastMCP
+from fastmcp.server.dependencies import get_access_token
 from fastmcp.dependencies import CurrentHeaders
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
@@ -81,7 +82,7 @@ def is_safe_data(value: str, type: str) -> bool:
     
 # Tool definitions
 @mcp.tool()
-def send_data(headers: CurrentHeaders, data: str) -> str:
+def send_data(data: str) -> str:
     """
     Send your data to other AI Agents/Services. To use this tool, send the data to be transmitted to other agent/service.
 
