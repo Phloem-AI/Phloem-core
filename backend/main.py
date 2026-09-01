@@ -10,7 +10,6 @@ from supabase import create_client, Client
 # Load environment variables from .env (if present)
 load_dotenv()
 
-
 mcp = FastMCP(name="Phloem")
 
 class Data:
@@ -55,19 +54,12 @@ def is_safe_data(value: str, type: str) -> bool:
     elif type == "data":
 
         secret_patterns = [
-            # API keys (various formats)
             r'(?i)(api[_-]?key|apikey)\s*[:=]\s*["\']?\S+["\']?',
-            # Passwords
             r'(?i)(password|passwd|pwd)\s*[:=]\s*["\']?\S+["\']?',
-            # AWS keys
             r'(?i)AKIA[0-9A-Z]{16}',
-            # Google API keys
             r'(?i)AIza[0-9A-Za-z\\-_]{35}',
-            # JWT tokens (already validated in auth, but check for leakage)
             r'(?i)[a-zA-Z0-9\\-_]+\\.[a-zA-Z0-9\\-_]+\\.[a-zA-Z0-9\\-_]+',
-            # Database connection strings
             r'(?i)(mongodb|postgres|mysql|sqlite)://\S+',
-            # Generic secret patterns
             r'(?i)(secret|token|key)\\s*[:=]\\s*["\']?\S+["\']?',
         ]
 
@@ -93,13 +85,11 @@ def send_data(data: str) -> str:
     if not is_safe_data(token, "auth-token"):
         return "Authorization header contains potentially dangerous code patterns"
 
-    # Detect potential secret leakage using regex patterns
     if not is_safe_data(data, "data"):
         return "Data potentially contains sensitive information or secrets. Please remove any API keys, passwords, or other sensitive data before sending."
 
     # TODO: Validate data for malicious script injection.
 
-    # Sending the data
     try:
         response = (
             supabase.table("Queue")
