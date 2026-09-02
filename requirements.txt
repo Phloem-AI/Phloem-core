@@ -2,3 +2,4 @@ fastmcp==3.4.7
 starlette==1.6.0
 python-dotenv==1.2.2
 supabase==2.31.0
+fastapi==0.141.1
