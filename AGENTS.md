@@ -13,10 +13,12 @@ It is **not**: a generic MCP proxy, an orchestration platform, or an agent marke
 ```
 Phloem-core/
 ├── backend/
-│   ├── main.py            # Entire MCP server (single-file app)
-│   ├── requirements.txt   # Python dependencies
-│   └── .env.example       # Template for required env vars
-├── README.md              # Product vision + local setup guide
+│   ├── main.py            # MCP tools, authentication, and Supabase access
+│   └── .env.example       # Template for required environment variables
+├── vercel.py              # Vercel ASGI entrypoint; serves MCP at /mcp
+├── vercel.json            # Vercel Python build and catch-all route
+├── requirements.txt       # Python dependencies (repository root)
+├── README.md              # Product vision and local setup guide
 ├── CONTRIBUTING.md
 └── LICENSE                # Apache-2.0
 ```
@@ -30,43 +32,76 @@ Phloem-core/
 
 ## Setup & Run
 
-```powershell
-cd backend
-python -m venv venv
-.\venv\Scripts\Activate.ps1        # Windows; `source venv/bin/activate` on Unix
+```bash
+python -m venv .venv
+source .venv/bin/activate           # Windows: .venv\\Scripts\\Activate.ps1
 pip install -r requirements.txt
 ```
 
-Create `backend/.env` (see `.env.example`):
+Create `backend/.env` (see `backend/.env.example`):
 
 ```
 SUPABASE_URL=https://your-supabase-url.supabase.co
-SUPABASE_PUBLISHABLE_KEY=your-supabase-key
+SUPABASE_KEY=your-supabase-key
 ```
 
 Run the server:
 
 ```powershell
-python main.py
+python backend/main.py
 ```
 
-The server runs over HTTP transport at `0.0.0.0:8000` with permissive CORS.
+The local server runs over HTTP at `0.0.0.0:8000`. The Vercel ASGI entrypoint is
+`vercel.py`, and the deployed MCP endpoint is `/mcp`.
 
 ## Architecture Notes
 
 - The server exposes two MCP tools:
-  - `send_data(headers, data)` — receives `{sender, data}` from an agent, validates the `Authorization: Bearer <token>` header, screens for code-injection patterns and secret leakage, then relays the data.
-  - `get_data(headers)` — fetches pending data for the calling agent (not yet implemented).
+  - `send_data(data)` — obtains the bearer token from FastMCP request context,
+    validates it against `Agents.agent_id`, screens the payload, and inserts it
+    into `Queue`.
+  - `get_data()` — obtains the bearer token, finds agents for the same user,
+    returns the latest matching queue record, and then deletes that record.
 - Auth model: **UUID API keys** passed as bearer tokens.
-- Design goals: zero-data retention (data deleted once delivered), secret extraction/redaction, policy-driven handoffs.
-- Supabase client is initialized at module load from env vars.
+- The Vercel transport uses stateless Streamable HTTP with JSON responses so
+  requests do not depend on one serverless instance.
+- Supabase client is initialized at module load from `SUPABASE_URL` and
+  `SUPABASE_KEY`.
+- Secret handling currently rejects several detected patterns; it does not
+  extract or redact secrets.
 
 ## Conventions for Agents
 
-- Keep changes within `backend/`; this is currently a single-file server.
+- Keep changes focused on the owning file. Deployment behavior belongs in
+  `vercel.py` and `vercel.json`; MCP and data behavior belongs in
+  `backend/main.py`.
 - Never commit `.env`, API keys, or tokens. Use `.env.example` as the template.
 - Don't introduce unnecessary dependencies that can be avoided with simple work-arounds.
 - Preserve the security posture: validate all incoming headers and payloads; treat all input as untrusted.
 - Test the code after any changes are made.
 - Match existing style: plain functions, docstrings written as tool descriptions for LLM consumers, inline `# TODO:` comments for unfinished work.
 - Update `README.md` / `TODO` when adding features that change scope.
+
+## Deployment Safety
+
+The Vercel entrypoint serves `/mcp` and is configured for stateless JSON HTTP.
+Before production deployment, verify all of the following:
+
+- Configure `SUPABASE_URL` and `SUPABASE_KEY` in Vercel project environment
+  variables for every intended deployment environment. Never expose a service
+  key to browser code.
+- Use a least-privilege Supabase key and enforce tenant isolation with database
+  policies. The current server-side key can bypass RLS if it is a service key.
+- Add payload-size limits, rate limiting, and bounded database queries before
+  exposing the endpoint publicly.
+- Make queue delivery atomic or otherwise concurrency-safe. The current
+  fetch-then-delete sequence can deliver one record more than once under
+  concurrent requests, and deleting by `created_at` is not guaranteed to target
+  one row.
+- Replace or harden `DebugTokenVerifier`: tokens have no expiry or revocation
+  mechanism, and validation performs a synchronous database request per request.
+- Add tests for authentication failures, tenant isolation, concurrent queue
+  delivery, secret-detection bypasses, and the `/mcp` deployment endpoint.
+
+The repository is not production-secure solely because it deploys successfully;
+the controls above are required for a security-sensitive public deployment.
