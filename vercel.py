@@ -3,8 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.main import mcp
 
 # 1. Generate the underlying FastMCP ASGI app.
-# By setting path="/", the MCP handlers operate cleanly at the root URL.
-mcp_app = mcp.http_app(path="/")
+# Expose the MCP endpoint at the conventional /mcp URL.
+mcp_app = mcp.http_app(
+    path="/mcp",
+    transport="http",
+    stateless_http=True,
+    json_response=True,
+)
 
 # 2. Build your primary FastAPI wrapper for Vercel.
 # We map the lifespan context so initialization scripts fire reliably on cold starts.
