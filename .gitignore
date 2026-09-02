@@ -219,3 +219,6 @@ __marimo__/
 
 # Extras
 TODO
+node_modules/
+package.json
+package-lock.json
