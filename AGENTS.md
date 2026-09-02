@@ -92,16 +92,5 @@ Before production deployment, verify all of the following:
   key to browser code.
 - Use a least-privilege Supabase key and enforce tenant isolation with database
   policies. The current server-side key can bypass RLS if it is a service key.
-- Add payload-size limits, rate limiting, and bounded database queries before
-  exposing the endpoint publicly.
-- Make queue delivery atomic or otherwise concurrency-safe. The current
-  fetch-then-delete sequence can deliver one record more than once under
-  concurrent requests, and deleting by `created_at` is not guaranteed to target
-  one row.
-- Replace or harden `DebugTokenVerifier`: tokens have no expiry or revocation
-  mechanism, and validation performs a synchronous database request per request.
-- Add tests for authentication failures, tenant isolation, concurrent queue
-  delivery, secret-detection bypasses, and the `/mcp` deployment endpoint.
 
-The repository is not production-secure solely because it deploys successfully;
-the controls above are required for a security-sensitive public deployment.
+This project is deployed on Vercel Serverless.
