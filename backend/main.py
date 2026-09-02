@@ -165,7 +165,7 @@ def get_data() -> str:
         return "No data available."
 
     # 3. Fetch the single latest Stack record sent by any of those agents
-    # The table is named "Queue" but behaves like Stack: FIFO
+    # The table is named "Queue" but behaves like Stack: LIFO
     try:
         queue_res = (
             supabase.table("Queue")
